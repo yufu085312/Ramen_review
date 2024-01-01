@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const ReviewForm = ({ selectedShopId }) => {
+    // ユーザーがフォームに入力するレビューの名前、内容、評価点をそれぞれ保持する
     const [name, setName] = useState('');
     const [review, setReview] = useState('');
     const [reviewPoints, setReviewPoints] = useState('');
+    // ユーザーにフィードバックを提供するためのメッセージを保持する
     const [message, setMessage] = useState('');
 
     const handleReviewSubmit = (e) => {
@@ -14,7 +16,7 @@ const ReviewForm = ({ selectedShopId }) => {
             console.error('ラーメン店が選択されていません');
             return;
         }
-
+        // レビューの投稿
         axios.post('http://localhost:3000/reviews', {
             write_name: name,
             review: review,
@@ -26,11 +28,12 @@ const ReviewForm = ({ selectedShopId }) => {
             setMessage('レビューが投稿されました！');
             resetForm();
         })
+        // エラーハンドリング
         .catch(error => {
+            // フィードバックメッセージ
             console.error('レビュー投稿エラー:', error);
             setMessage('レビューの投稿に失敗しました。');
         });
-
         // 投稿成功メッセージを数秒後に非表示にする
         setTimeout(() => {
             setMessage('');
