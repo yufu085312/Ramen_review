@@ -12,6 +12,8 @@ function App() {
   const [selectedShopId, setSelectedShopId] = useState(null); // 選択されたラーメン店のIDを格納する状態
   const [selectedShopReviews, setSelectedShopReviews] = useState([]); // 選択されたラーメン店のレビューを格納する状態
   const [mapCenter, setMapCenter] = useState([35.6895, 139.6917]); // マップの中心地を格納する状態。初期値は東京の座標
+  // 投稿モードの状態を追加
+  const [postMode, setPostMode] = useState(false);
 
   // 選択されたラーメン店のIDに基づいて、その店のレビューを取得し、selectedShopReviews 状態を更新する。
   const fetchReviewsForShop = (shopId) => {
@@ -35,15 +37,52 @@ function App() {
     fetchReviewsForShop(shopId);
 };
 
-  return (
-    <div>
-      <SearchForm setShops={setShops} /> { /* ラーメン店を検索するためのフォーム */}
-      <ShopList shops={shops} onShopSelect={handleShopSelect} /> {/* 検索されたラーメン店の一覧 */}
-      <Map shops={shops} center={mapCenter} onShopSelect={handleShopSelect} /> {/* ラーメン店の位置情報を表示するマップ */}
-      <ReviewList reviews={selectedShopReviews} /> {/* 選択されたラーメン店のレビュー一覧 */}
-      <ReviewForm selectedShopId={selectedShopId} /> {/* 選択されたラーメン店へのレビュー投稿フォーム */}
-    </div>
-  );
+// Toggle post mode
+const enablePostMode = () => {
+  setPostMode(true);
+};
+
+const disablePostMode = () => {
+  setPostMode(false);
+};
+
+return (
+  <div style={{ height: '150vh' }}>
+    {postMode ? (
+      // Post mode display
+      <div style={{ padding: '20px' }}>
+        <button onClick={disablePostMode}>Return</button>
+        <ReviewForm selectedShopId={selectedShopId} />
+      </div>
+    ) : (
+      // Normal mode display
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Search key placement */}
+        <div style={{ textAlign: 'center' }}>
+          <SearchForm setShops={setShops} />
+        </div>
+
+        <div style={{ display: 'flex', flexGrow: 1 }}>
+          {/* Left content (ramen shop list) */}
+          <div style={{ width: '50%', overflowY: 'auto' }}>
+            <ShopList shops={shops} onShopSelect={handleShopSelect} />
+          </div>
+
+          {/* Right content (map and review list or review post form) */}
+          <div style={{ width: '50%' }}>
+            <div style={{ height: '30%' }}>
+              <Map shops={shops} center={mapCenter} onShopSelect={handleShopSelect} />
+            </div>
+            <div style={{ height: '70%', overflowY: 'auto' }}>
+              <button onClick={enablePostMode}>Post Review</button>
+              {selectedShopId && <ReviewList reviews={selectedShopReviews} />}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
 }
 
 export default App;
