@@ -38,6 +38,13 @@ const Map = ({ shops, center, onShopSelect }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [center]);
 
+    // Debugging: Log the shops data
+    console.log('Shops data:', shops);
+
+    if (!mapCenter) {
+        return <div>Loading map...</div>;
+    }
+
 
     return (
         <MapContainer key={mapKey} center={mapCenter} zoom={17} style={{ height: '400px', width: '100%' }}>

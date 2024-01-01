@@ -6,6 +6,7 @@ import ShopList from './ShopList';
 import ReviewList from './ReviewList';
 import ReviewForm from './ReviewForm';
 import Map from './Map';
+import './styles/App.css'; // Adjust the path according to your file structure
 
 function App() {
   const [shops, setShops] = useState([]); // ラーメン店の一覧を格納する状態
@@ -47,33 +48,26 @@ const disablePostMode = () => {
 };
 
 return (
-  <div style={{ height: '150vh' }}>
+  <div className="appContainer">
     {postMode ? (
-      // Post mode display
-      <div style={{ padding: '20px' }}>
+      <div className="padding20">
         <button onClick={disablePostMode}>Return</button>
         <ReviewForm selectedShopId={selectedShopId} />
       </div>
     ) : (
-      // Normal mode display
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Search key placement */}
-        <div style={{ textAlign: 'center' }}>
+      <div className="flexGrow">
+        <div className="centerText">
           <SearchForm setShops={setShops} />
         </div>
-
-        <div style={{ display: 'flex', flexGrow: 1 }}>
-          {/* Left content (ramen shop list) */}
-          <div style={{ width: '50%', overflowY: 'auto' }}>
+        <div className="flexGrow">
+          <div className="halfWidth">
             <ShopList shops={shops} onShopSelect={handleShopSelect} />
           </div>
-
-          {/* Right content (map and review list or review post form) */}
-          <div style={{ width: '50%' }}>
-            <div style={{ height: '30%' }}>
+          <div className="halfWidth">
+            <div className="mapHeight">
               <Map shops={shops} center={mapCenter} onShopSelect={handleShopSelect} />
             </div>
-            <div style={{ height: '70%', overflowY: 'auto' }}>
+            <div className="reviewsHeight">
               <button onClick={enablePostMode}>Post Review</button>
               {selectedShopId && <ReviewList reviews={selectedShopReviews} />}
             </div>

@@ -1,0 +1,32 @@
+/* src/styles/style.css */
+
+.appContainer {
+    height: 150vh;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.flexGrow {
+    display: flex;
+    flex-grow: 1;
+}
+
+.halfWidth {
+    width: 50%;
+    overflow-y: auto;
+}
+
+.mapHeight {
+    height: 30%;
+}
+
+.reviewsHeight {
+    height: 70%;
+    overflow-y: auto;
+}
+
+.padding20 {
+    padding: 20px;
+}
