@@ -1,7 +1,8 @@
 // アプリケーションのメインコンポーネント
 import React, { useState, useEffect } from 'react';
 import { handleMapMovement } from './MapLogic';
-import { fetchReviewsForShop, searchShops, fetchShopsBasedOnCenter } from './api';
+import { handleSearch } from './SearchLogic';
+import { fetchReviewsForShop, fetchShopsBasedOnCenter } from './api';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
 import ReviewList from './ReviewList';
@@ -21,19 +22,9 @@ function App() {
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [selectedShop, setSelectedShop] = useState(null);
 
-  const handleSearch = async (query) => {
-    try {
-      const data = await searchShops(query);
-      if (data.length > 0) {
-        setMapCenter([data[0].lat, data[0].lng]);
-        setShops(data);
-        setIsSearchActive(true);
-        setDisplayedShops(data);
-        setShowCircle(false);
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-    }
+  // onSearch 関数を使用する場合（SearchForm コンポーネントに渡される）
+  const onSearch = async (query) => {
+    await handleSearch(query, setMapCenter, setShops, setIsSearchActive, setDisplayedShops, setShowCircle);
   };
 
   // センターに基づいてショップを取得する機能
@@ -120,7 +111,7 @@ function App() {
       ) : (
         <div className="flexGrow">
           <div className="centerText">
-            <SearchForm onSearch={handleSearch} clearShops={clearShops} />
+            <SearchForm onSearch={onSearch} clearShops={clearShops} />
           </div>
           <div className="flexGrow">
             <div className="halfWidth">
