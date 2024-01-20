@@ -1,6 +1,6 @@
 // アプリケーションのメインコンポーネント
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchReviewsForShop, searchShops, fetchShopsBasedOnCenter } from './api';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
 import ReviewList from './ReviewList';
@@ -21,25 +21,14 @@ function App() {
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [selectedShop, setSelectedShop] = useState(null);
 
-  // 選択されたラーメン店のIDに基づいて、その店のレビューを取得し、selectedShopReviews 状態を更新する。
-  const fetchReviewsForShop = (shopId) => {
-    axios.get(`http://localhost:3000/reviews/shop/${shopId}`)
-      .then(response => {
-        setSelectedShopReviews(response.data);
-      })
-      .catch(error => {
-        console.error('レビュー取得エラー:', error);
-      });
-  };
-
   const handleSearch = async (query) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/hotpepper/shops`, { params: { query } });
-      if (response.data.length > 0) {
-        setMapCenter([response.data[0].lat, response.data[0].lng]);
-        setShops(response.data);
+      const data = await searchShops(query);
+      if (data.length > 0) {
+        setMapCenter([data[0].lat, data[0].lng]);
+        setShops(data);
         setIsSearchActive(true);
-        setDisplayedShops(response.data);
+        setDisplayedShops(data);
         setShowCircle(false);
       }
     } catch (error) {
@@ -51,10 +40,8 @@ function App() {
   const fetchShops = async (center) => {
     try {
       const [lat, lng] = center;
-      const response = await axios.get(`http://localhost:3000/api/hotpepper/shops`, {
-        params: { lat, lng, radius: 1000 }
-      });
-      setShops(response.data);
+      const data = await fetchShopsBasedOnCenter(lat, lng);
+      setShops(data);
       setIsSearchActive(false);
     } catch (error) {
       console.error('Shop fetch error:', error);
@@ -111,21 +98,24 @@ function App() {
   };
 
   // ラーメン店が選択されたときに呼び出される。
-  // 選択された店の位置情報をマップの中心地に設定し、その店のレビューを取得する。
-  const handleShopSelect = (shopId) => {
+  const handleShopSelect = async (shopId) => {
     const shop = shops.find(s => s.id === shopId);
     if (shop) {
       const newCenter = [parseFloat(shop.lat), parseFloat(shop.lng)];
       setSelectedShop(shop); // 選択された店のデータを設定
       setMapCenter(newCenter);  // 地図の中心を更新
-      console.log("New center set to:", newCenter);
       // mapInstanceが存在する場合、新しい中心に飛ぶ
       if (mapInstance) {
         mapInstance.flyTo(newCenter, mapInstance.getZoom());
       }
     }
     setSelectedShopId(shopId);
-    fetchReviewsForShop(shopId);
+    try {
+      const reviews = await fetchReviewsForShop(shopId); // API 呼び出し
+      setSelectedShopReviews(reviews);
+    } catch (error) {
+      console.error('レビュー取得エラー:', error);
+    }
   };
 
   // Toggle post mode
