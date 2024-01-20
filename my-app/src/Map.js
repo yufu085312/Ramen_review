@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import pinIconUrl from './path/to/pin-icon.png';
+import pinIconUrl2 from './path/to/pin-icon2.png';
 
 const customIcon = new L.Icon({
     iconUrl: pinIconUrl,
@@ -11,62 +12,69 @@ const customIcon = new L.Icon({
     popupAnchor: [1, -34]
 });
 
-const Map = ({ shops, center, onShopSelect }) => {
-    const [mapCenter, setMapCenter] = useState(center);
-    const [mapKey, setMapKey] = useState(Date.now());
+const MapEvents = ({ onMoveEnd }) => {
+    useMapEvents({
+        moveend: (e) => {
+            const newCenter = e.target.getCenter();
+            console.log("MapEvents: moveend with newCenter", newCenter);
+            onMoveEnd([newCenter.lat, newCenter.lng]);
+        },
+    });
+    return null;
+};
 
-    useEffect(() => {
-        // コンポーネントのマウント時にユーザーの現在位置を 1 回だけ取得します
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setMapCenter([position.coords.latitude, position.coords.longitude]);
-                setMapKey(Date.now());
-            },
-            (error) => {
-                console.error('位置情報の取得に失敗しました。', error);
-            },
-            { timeout: 10000 }
-        );
-    }, []);
+const Map = ({ center, onShopSelect, shops, selectedShop, setMapCenter, showCircle}) => {
+    // console.log(center)
+    const mapRef = useRef(null);  // マップインスタンスを保持するための ref
 
-    useEffect(() => {
-        // 選択したショップの位置が変更されたときにマップの中心を更新します
-        if (center !== mapCenter) {
-            setMapCenter(center);
-            setMapKey(Date.now());
+    const getIcon = (shop) => {
+        if (selectedShop && shop.id === selectedShop.id) {
+          // 選択された店のための大きいアイコン
+            return new L.Icon({
+                iconUrl: pinIconUrl2,
+                iconSize: [35, 55], // 大きいサイズに変更
+                iconAnchor: [17, 55],
+                popupAnchor: [1, -50]
+            });
+        } else {
+            // 通常サイズのアイコン
+            return customIcon;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [center]);
+    };
 
-    // Debugging: Log the shops data
-    console.log('Shops data:', shops);
-
-    if (!mapCenter) {
-        return <div>Loading map...</div>;
+    useEffect(() => {
+    console.log("mapRef before flying to center:", mapRef.current);
+    if (mapRef.current) {
+        console.log("Map ref:", mapRef.current);
+        mapRef.current.flyTo(center);
     }
-
-
+    }, [center]);
+    
+    const renderMarkers = () => {
+        return shops.map(shop => (
+            <Marker
+                key={shop.id}
+                position={[Number(shop.lat), Number(shop.lng)]}
+                icon={getIcon(shop)} // アイコンを動的に取得
+                eventHandlers={{ click: () => onShopSelect(shop.id) }}>
+                <Popup>{shop.name}</Popup>
+            </Marker>
+        ));
+    };
+    
     return (
-        <MapContainer key={mapKey} center={mapCenter} zoom={17} style={{ height: '400px', width: '100%' }}>
+        <MapContainer
+            center={center}
+            zoom={14}
+            style={{ height: '400px', width: '100%' }}
+            >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution='&copy; OpenStreetMap contributors'
             />
-            {shops.map(shop => (
-                shop.lat && shop.lng &&
-                <Marker
-                    key={shop.id}
-                    position={[Number(shop.lat), Number(shop.lng)]}
-                    icon={customIcon}
-                    eventHandlers={{
-                        click: () => {
-                            onShopSelect(shop.id);
-                        },
-                    }}
-                >
-                    <Popup>{shop.name}</Popup>
-                </Marker>
-            ))}
+            {renderMarkers()}
+            {showCircle && <Circle center={center} radius={1000} />}
+            <MapEvents onMoveEnd={setMapCenter} />
         </MapContainer>
     );
 };
