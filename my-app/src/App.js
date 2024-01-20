@@ -1,5 +1,6 @@
 // アプリケーションのメインコンポーネント
 import React, { useState, useEffect } from 'react';
+import { handleMapMovement } from './MapLogic';
 import { fetchReviewsForShop, searchShops, fetchShopsBasedOnCenter } from './api';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
@@ -47,18 +48,9 @@ function App() {
     }
   };
 
-  // 地図移動を扱う機能
-  // 地図の中心を更新する関数
-  const updateMapCenter = (newCenter) => {
-    setMapCenter(newCenter);
-    if (!isSearchActive) {
-      fetchShops(newCenter);
-    }
-  };
-
   // 地図の移動イベントを扱う関数
-  const handleMapMovement = (newCenter) => {
-    updateMapCenter([newCenter.lat, newCenter.lng]); // newCenter を配列形式で渡す
+  const onMapMovement = (newCenter) => {
+    handleMapMovement(newCenter, setMapCenter, fetchShops, isSearchActive);
   };
 
   useEffect(() => {
@@ -141,7 +133,7 @@ function App() {
                 selectedShop={selectedShop}
                 center={mapCenter}
                 onShopSelect={handleShopSelect}
-                onMapMovement={handleMapMovement}
+                onMapMovement={onMapMovement}
                 showCircle={showCircle}
               />}
               </div>
