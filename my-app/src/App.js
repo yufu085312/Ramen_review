@@ -17,7 +17,6 @@ function App() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [showCircle, setShowCircle] = useState(true);
   const [displayedShops, setDisplayedShops] = useState([]);
-  const [mapInstance, setMapInstance] = useState(null);
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [selectedShop, setSelectedShop] = useState(null);
 
@@ -36,10 +35,10 @@ function App() {
     }
   };
 
-  // Function to fetch shops based on center
+  // センターに基づいてショップを取得する機能
   const fetchShops = async (center) => {
     try {
-      const [lat, lng] = center;
+      const [lat, lng] = center; // ここで center を分解する
       const data = await fetchShopsBasedOnCenter(lat, lng);
       setShops(data);
       setIsSearchActive(false);
@@ -48,14 +47,18 @@ function App() {
     }
   };
 
-  // Function to handle map movement
-  const handleMapMovement = (newCenter) => {
-    console.log("App.js: handleMapMovement called with newCenter", newCenter);
+  // 地図移動を扱う機能
+  // 地図の中心を更新する関数
+  const updateMapCenter = (newCenter) => {
     setMapCenter(newCenter);
     if (!isSearchActive) {
-      setShowCircle(true);
       fetchShops(newCenter);
     }
+  };
+
+  // 地図の移動イベントを扱う関数
+  const handleMapMovement = (newCenter) => {
+    updateMapCenter([newCenter.lat, newCenter.lng]); // newCenter を配列形式で渡す
   };
 
   useEffect(() => {
@@ -73,21 +76,13 @@ function App() {
     );
   }, []);
 
-  // Call fetchShopsNearby initially and when mapCenter changes
+  // 最初と、mapCenter が変更されたときに fetchShopsNearby を呼び出します
   useEffect(() => {
     if (!isSearchActive) {
       fetchShops(mapCenter);
     }
     // 依存関係配列には `isSearchActive` と `mapCenter` のみを含めます。
   }, [mapCenter, isSearchActive]);
-
-  useEffect(() => {
-    console.log("mapCenter updated:", mapCenter);
-    if (mapInstance && mapCenter) {
-      mapInstance.flyTo(mapCenter, mapInstance.getZoom());
-    }
-  }, [mapInstance, mapCenter]);
-  
 
   // ショップリストをクリアする関数
   const clearShops = () => {
@@ -104,10 +99,6 @@ function App() {
       const newCenter = [parseFloat(shop.lat), parseFloat(shop.lng)];
       setSelectedShop(shop); // 選択された店のデータを設定
       setMapCenter(newCenter);  // 地図の中心を更新
-      // mapInstanceが存在する場合、新しい中心に飛ぶ
-      if (mapInstance) {
-        mapInstance.flyTo(newCenter, mapInstance.getZoom());
-      }
     }
     setSelectedShopId(shopId);
     try {
@@ -147,13 +138,11 @@ function App() {
               <div className="mapHeight">
               {locationLoaded && <Map
                 shops={isSearchActive ? displayedShops : shops}
-                selectedShop={selectedShop} // 選択された店のデータを渡す
+                selectedShop={selectedShop}
                 center={mapCenter}
                 onShopSelect={handleShopSelect}
-                setMapCenter={handleMapMovement}
-                isSearchActive={isSearchActive}
+                onMapMovement={handleMapMovement}
                 showCircle={showCircle}
-                setMapInstance={setMapInstance}
               />}
               </div>
               <div className="reviewsHeight">

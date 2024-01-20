@@ -12,18 +12,16 @@ const customIcon = new L.Icon({
     popupAnchor: [1, -34]
 });
 
-const MapEvents = ({ onMoveEnd }) => {
-    useMapEvents({
+const MapEvents = ({ onMapMovement }) => {
+        useMapEvents({
         moveend: (e) => {
-            const newCenter = e.target.getCenter();
-            console.log("MapEvents: moveend with newCenter", newCenter);
-            onMoveEnd([newCenter.lat, newCenter.lng]);
+            onMapMovement(e.target.getCenter());
         },
     });
     return null;
 };
 
-const Map = ({ center, onShopSelect, shops, selectedShop, setMapCenter, showCircle}) => {
+const Map = ({ center, onShopSelect, shops, selectedShop, onMapMovement, showCircle }) => {
     // console.log(center)
     const mapRef = useRef(null);  // マップインスタンスを保持するための ref
 
@@ -43,11 +41,9 @@ const Map = ({ center, onShopSelect, shops, selectedShop, setMapCenter, showCirc
     };
 
     useEffect(() => {
-    console.log("mapRef before flying to center:", mapRef.current);
-    if (mapRef.current) {
-        console.log("Map ref:", mapRef.current);
-        mapRef.current.flyTo(center);
-    }
+        if (mapRef.current) {
+            mapRef.current.flyTo(center);
+        }
     }, [center]);
     
     const renderMarkers = () => {
@@ -67,6 +63,7 @@ const Map = ({ center, onShopSelect, shops, selectedShop, setMapCenter, showCirc
             center={center}
             zoom={14}
             style={{ height: '400px', width: '100%' }}
+            whenCreated={map => (mapRef.current = map)}
             >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -74,7 +71,7 @@ const Map = ({ center, onShopSelect, shops, selectedShop, setMapCenter, showCirc
             />
             {renderMarkers()}
             {showCircle && <Circle center={center} radius={1000} />}
-            <MapEvents onMoveEnd={setMapCenter} />
+            <MapEvents onMapMovement={onMapMovement} />
         </MapContainer>
     );
 };
