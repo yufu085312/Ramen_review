@@ -1,8 +1,8 @@
 // アプリケーションのメインコンポーネント
 import React, { useState, useEffect } from 'react';
-import { handleMapMovement } from './MapLogic';
 import { handleSearch } from './SearchLogic';
-import { fetchReviewsForShop, fetchShopsBasedOnCenter } from './api';
+import { onMapMovement, fetchShops } from './MapRelatedLogic';
+import { fetchReviewsForShop} from './api';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
 import ReviewList from './ReviewList';
@@ -27,21 +27,10 @@ function App() {
     await handleSearch(query, setMapCenter, setShops, setIsSearchActive, setDisplayedShops, setShowCircle);
   };
 
-  // センターに基づいてショップを取得する機能
-  const fetchShops = async (center) => {
-    try {
-      const [lat, lng] = center; // ここで center を分解する
-      const data = await fetchShopsBasedOnCenter(lat, lng);
-      setShops(data);
-      setIsSearchActive(false);
-    } catch (error) {
-      console.error('Shop fetch error:', error);
-    }
-  };
-
-  // 地図の移動イベントを扱う関数
-  const onMapMovement = (newCenter) => {
-    handleMapMovement(newCenter, setMapCenter, fetchShops, isSearchActive);
+  const onMapChange = (newCenter) => {
+    // newCenter が { lat: number, lng: number } 形式である場合、配列に変換する
+    const centerArray = [newCenter.lat, newCenter.lng];
+    onMapMovement(centerArray, setMapCenter, setShops, setIsSearchActive, isSearchActive);
   };
 
   useEffect(() => {
@@ -62,10 +51,10 @@ function App() {
   // 最初と、mapCenter が変更されたときに fetchShopsNearby を呼び出します
   useEffect(() => {
     if (!isSearchActive) {
-      fetchShops(mapCenter);
+      // mapCenter が配列であることを確認してください。
+      fetchShops(mapCenter, setShops, setIsSearchActive);
     }
-    // 依存関係配列には `isSearchActive` と `mapCenter` のみを含めます。
-  }, [mapCenter, isSearchActive]);
+  }, [mapCenter, isSearchActive, setShops, setIsSearchActive]);
 
   // ショップリストをクリアする関数
   const clearShops = () => {
@@ -124,7 +113,7 @@ function App() {
                 selectedShop={selectedShop}
                 center={mapCenter}
                 onShopSelect={handleShopSelect}
-                onMapMovement={onMapMovement}
+                onMapMovement={onMapChange}
                 showCircle={showCircle}
               />}
               </div>
