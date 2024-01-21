@@ -22,9 +22,17 @@ const SearchForm = ({ onSearch, clearShops }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ラーメン店を検索"
+                style={{ fontSize: '1.2em', padding: '10px', width: '300px' }}
+                // テキスト入力フィールドのサイズを大きくする
             />
-            <button onClick={handleClear}>クリア</button>
-            <button onClick={handleSearch}>検索</button>
+            <button onClick={handleSearch} style={{ fontSize: '1.2em', padding: '10px 20px' }}>
+                検索
+                {/* 検索ボタンのサイズを大きくする */}
+            </button>
+            <button onClick={handleClear} style={{ fontSize: '1.2em', padding: '10px 20px' }}>
+                クリア
+                {/* クリアボタンのサイズを大きくする */}
+            </button>
         </div>
     );
 };

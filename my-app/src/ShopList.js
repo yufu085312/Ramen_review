@@ -23,7 +23,7 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
                 ))}
             </ul>
             {(pageIndex + 1) * itemsPerPage < shops.length && (
-                <button onClick={showMoreShops}>もっと見る</button>
+                <button onClick={showMoreShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>もっと見る</button>
             )}
         </div>
     );

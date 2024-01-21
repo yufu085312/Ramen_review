@@ -21,7 +21,7 @@ const ReviewList = ({ reviews }) => {
 
     return (
         <div className="reviewListContainer">
-            <h2>レビュー一覧</h2>
+            <h1>一覧</h1>
             <div className="reviewList">
                 <ul>
                     {renderReviews()}

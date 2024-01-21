@@ -12,6 +12,11 @@ const ReviewForm = ({ selectedShopId }) => {
 
     const handleReviewSubmit = (e) => {
         e.preventDefault();
+        // 未入力チェック
+        if (!name.trim() || !review.trim() || !reviewPoints) {
+            setMessage('全ての項目を入力してください。');
+            return;
+        }
         if (!selectedShopId) {
             console.error('ラーメン店が選択されていません');
             return;
@@ -48,28 +53,43 @@ const ReviewForm = ({ selectedShopId }) => {
     };
 
     return (
-        <div>
+        <div className="reviewFormContainer">
             <h2>レビューを投稿</h2>
             {message && <p>{message}</p>}
-            <form onSubmit={handleReviewSubmit}>
-                <input
-                    type="text"
-                    placeholder="名前"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <textarea
-                    placeholder="レビュー"
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                ></textarea>
-                <input
-                    type="number"
-                    placeholder="評価点数"
-                    value={reviewPoints}
-                    onChange={(e) => setReviewPoints(e.target.value)}
-                />
-                <button type="submit">投稿</button>
+            <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+                {/* 名前入力フィールド */}
+                <label>
+                    名前:
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={{ fontSize: '1.2em', padding: '5px', width: '300px' }} // スタイルを適用
+                    />
+                </label>
+                {/* レビュー入力フィールド */}
+                <label>
+                    レビュー:
+                    <textarea
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                        style={{ fontSize: '1.2em', padding: '5px', width: '300px', height: '100px' }} // スタイルを適用
+                    ></textarea>
+                </label>
+                {/* 評価点入力フィールド */}
+                <label>
+                    評価点:
+                    <input
+                        type="number"
+                        value={reviewPoints}
+                        onChange={(e) => setReviewPoints(e.target.value)}
+                        style={{ fontSize: '1.2em', padding: '5px', width: '100px' }} // スタイルを適用
+                    />
+                </label>
+                {/* 投稿ボタン */}
+                <div style={{ textAlign: 'center' }}>
+                    <button type="submit" style={{ width: '100px', fontSize: '1.2em', padding: '10px 20px' }}>投稿</button>
+                </div>
             </form>
         </div>
     );
