@@ -1,0 +1,30 @@
+.reviewListContainer {
+    max-width: 700px;
+    /* 必要に応じて調整 */
+    margin: auto;
+}
+
+.reviewList {
+    max-height: 500px;
+    /* 高さの上限 */
+    overflow-y: auto;
+    /* 縦方向のスクロールバー */
+    padding: 15px;
+    border: 1px solid #ddd;
+    /* 枠線 */
+    border-radius: 5px;
+    /* 角丸 */
+    background-color: #f9f9f9;
+    /* 背景色 */
+}
+
+.reviewList ul {
+    list-style: none;
+    /* リストのスタイルをなしに */
+    padding: 0;
+}
+
+.reviewList li {
+    margin-bottom: 10px;
+    /* レビュー間のマージン */
+}
