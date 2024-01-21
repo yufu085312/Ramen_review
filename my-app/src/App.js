@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { handleSearch } from './SearchLogic';
 import { onMapMovement, fetchShops } from './MapRelatedLogic';
-import { fetchReviewsForShop} from './api';
+import { clearShops, handleShopSelect } from './ShopLogic';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
 import ReviewList from './ReviewList';
@@ -57,28 +57,13 @@ function App() {
   }, [mapCenter, isSearchActive, setShops, setIsSearchActive]);
 
   // ショップリストをクリアする関数
-  const clearShops = () => {
-    setShops([]);
-    setIsSearchActive(false);
-    setShowCircle(true);
-    setDisplayedShops([]); // 表示される店舗をリセット
+  // Updated function calls with required arguments
+  const onShopSelect = (shopId) => {
+    handleShopSelect(shopId, shops, setSelectedShop, setMapCenter, setSelectedShopId, setSelectedShopReviews);
   };
 
-  // ラーメン店が選択されたときに呼び出される。
-  const handleShopSelect = async (shopId) => {
-    const shop = shops.find(s => s.id === shopId);
-    if (shop) {
-      const newCenter = [parseFloat(shop.lat), parseFloat(shop.lng)];
-      setSelectedShop(shop); // 選択された店のデータを設定
-      setMapCenter(newCenter);  // 地図の中心を更新
-    }
-    setSelectedShopId(shopId);
-    try {
-      const reviews = await fetchReviewsForShop(shopId); // API 呼び出し
-      setSelectedShopReviews(reviews);
-    } catch (error) {
-      console.error('レビュー取得エラー:', error);
-    }
+  const onClearShops = () => {
+    clearShops(setShops, setIsSearchActive, setShowCircle, setDisplayedShops);
   };
 
   // Toggle post mode
@@ -100,11 +85,11 @@ function App() {
       ) : (
         <div className="flexGrow">
           <div className="centerText">
-            <SearchForm onSearch={onSearch} clearShops={clearShops} />
+            <SearchForm onSearch={onSearch} clearShops={onClearShops} />
           </div>
           <div className="flexGrow">
             <div className="halfWidth">
-            <ShopList shops={isSearchActive ? displayedShops : shops} onShopSelect={handleShopSelect} />
+            <ShopList shops={isSearchActive ? displayedShops : shops} onShopSelect={onShopSelect} />
             </div>
             <div className="halfWidth">
               <div className="mapHeight">
