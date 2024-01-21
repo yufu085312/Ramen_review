@@ -30,6 +30,8 @@ function App() {
   const [selectedShop, setSelectedShop] = useState(null);
   // ページインデックスの状態
   const [pageIndex, setPageIndex] = useState(0);
+  // レビューリスト表示の状態
+  const [showReviewList, setShowReviewList] = useState(false);
 
   // ショップ検索処理
   const onSearch = async (query) => {
@@ -46,6 +48,12 @@ function App() {
   // ショップ選択処理
   const onShopSelect = (shopId) => {
     handleShopSelect(shopId, shops, setSelectedShop, setMapCenter, setSelectedShopId, setSelectedShopReviews);
+    setShowReviewList(true);  // レビューリストを表示
+  };
+
+  // レビューリストからショップリストへ戻る
+  const backToShopList = () => {
+    setShowReviewList(false);
   };
 
   // ショップリストのクリア処理
@@ -70,12 +78,20 @@ function App() {
           </div>
           <div className="flexGrow">
             <div className="halfWidth">
+            {!showReviewList ? (
               <ShopList
                 shops={isSearchActive ? displayedShops : shops}
                 onShopSelect={onShopSelect}
-                pageIndex={pageIndex} // pageIndex と setPageIndex を渡す
+                pageIndex={pageIndex}
                 setPageIndex={setPageIndex}
               />
+            ) : (
+              <div>
+                <button onClick={backToShopList}>戻る</button>
+                <button onClick={enablePostMode}>Post Review</button>
+                <ReviewList reviews={selectedShopReviews} />
+              </div>
+            )}
             </div>
             <div className="halfWidth">
               <div className="mapHeight">
@@ -87,10 +103,6 @@ function App() {
                   onMapMovement={onMapChange}
                   showCircle={showCircle}
                 />}
-              </div>
-              <div className="reviewsHeight">
-                <button onClick={enablePostMode}>Post Review</button>
-                {selectedShopId && <ReviewList reviews={selectedShopReviews} />}
               </div>
             </div>
           </div>
