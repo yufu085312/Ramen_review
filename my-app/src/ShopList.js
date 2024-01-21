@@ -12,11 +12,12 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
 
     return (
         <div>
-            <ul>
+            <ul style={{ listStyleType: 'none' }}>
                 {displayedShops.map((shop) => (
-                    <li key={shop.id} onClick={() => onShopSelect(shop.id)} style={{ cursor: 'pointer' }}>
+                    // Flexbox を使用してアイテムを横に並べる
+                    <li key={shop.id} onClick={() => onShopSelect(shop.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                         <img src={shop.logo_image} alt={shop.name} style={{ width: '150px', height: '150px', marginRight: '30px' }} />
-                        {/* 店名のフォントサイズを大きくする */}
+                        {/* fontSizeを大きくする */}
                         <span style={{ fontSize: '1.8em' }}>{shop.name}</span>
                     </li>
                 ))}

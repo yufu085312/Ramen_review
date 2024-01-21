@@ -53,4 +53,5 @@
 .padding20 {
     padding: 20px;
     /* すべての方向に20ピクセルのパディングを適用 */
+    text-align: center;
 }
