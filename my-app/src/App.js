@@ -28,9 +28,12 @@ function App() {
   const [showCircle, setShowCircle] = useState(true);
   const [displayedShops, setDisplayedShops] = useState([]);
   const [selectedShop, setSelectedShop] = useState(null);
+  // ページインデックスの状態
+  const [pageIndex, setPageIndex] = useState(0);
 
   // ショップ検索処理
   const onSearch = async (query) => {
+    setPageIndex(0); // 検索時にページインデックスをリセット
     await handleSearch(query, setMapCenter, setShops, setIsSearchActive, setDisplayedShops, setShowCircle);
   };
 
@@ -67,7 +70,12 @@ function App() {
           </div>
           <div className="flexGrow">
             <div className="halfWidth">
-              <ShopList shops={isSearchActive ? displayedShops : shops} onShopSelect={onShopSelect} />
+              <ShopList
+                shops={isSearchActive ? displayedShops : shops}
+                onShopSelect={onShopSelect}
+                pageIndex={pageIndex} // pageIndex と setPageIndex を渡す
+                setPageIndex={setPageIndex}
+              />
             </div>
             <div className="halfWidth">
               <div className="mapHeight">
