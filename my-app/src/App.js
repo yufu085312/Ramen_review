@@ -1,8 +1,9 @@
 // アプリケーションのメインコンポーネント
 import React, { useState } from 'react';
 import { useCurrentLocation } from './useCurrentLocation';
+import { usePostMode } from './usePostMode';
 import { handleSearch } from './SearchLogic';
-import { onMapMovement} from './MapRelatedLogic';
+import { onMapMovement } from './MapRelatedLogic';
 import { clearShops, handleShopSelect } from './ShopLogic';
 import SearchForm from './SearchForm';
 import ShopList from './ShopList';
@@ -13,11 +14,10 @@ import './styles/App.css';
 
 function App() {
   const { locationLoaded, mapCenter, setMapCenter } = useCurrentLocation();
-
+  const { postMode, enablePostMode, disablePostMode } = usePostMode();
   const [shops, setShops] = useState([]);
   const [selectedShopId, setSelectedShopId] = useState(null);
   const [selectedShopReviews, setSelectedShopReviews] = useState([]);
-  const [postMode, setPostMode] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [showCircle, setShowCircle] = useState(true);
   const [displayedShops, setDisplayedShops] = useState([]);
@@ -39,9 +39,6 @@ function App() {
   const onClearShops = () => {
     clearShops(setShops, setIsSearchActive, setShowCircle, setDisplayedShops);
   };
-
-  const enablePostMode = () => setPostMode(true);
-  const disablePostMode = () => setPostMode(false);
 
   return (
     <div className="appContainer">
