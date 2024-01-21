@@ -67,7 +67,7 @@ function App() {
       {postMode ? (
         // 投稿モードのUI
         <div className="padding20">
-          <button onClick={disablePostMode}>Return</button>
+          <button onClick={disablePostMode}>戻る</button>
           <ReviewForm selectedShopId={selectedShopId} />
         </div>
       ) : (
