@@ -67,7 +67,7 @@ function App() {
       {postMode ? (
         // 投稿モードのUI
         <div className="padding20">
-          <button onClick={disablePostMode}>戻る</button>
+          <button onClick={disablePostMode} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
           <ReviewForm selectedShopId={selectedShopId} />
         </div>
       ) : (
@@ -90,8 +90,8 @@ function App() {
               // レビューリスト表示
               <div>
                 <ReviewList reviews={selectedShopReviews} />
-                <button onClick={backToShopList}>戻る</button>
-                <button onClick={enablePostMode}>投稿</button>
+                <button onClick={backToShopList} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
+                <button onClick={enablePostMode} style={{ fontSize: '1.2em', padding: '10px 20px' }}>投稿</button>
               </div>
             )}
             </div>
