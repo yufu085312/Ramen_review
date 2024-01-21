@@ -1,5 +1,4 @@
 // ラーメン店の一覧表示
-// import React, { useState } from 'react';
 
 const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
     const itemsPerPage = 4;
@@ -17,7 +16,8 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
                 {displayedShops.map((shop) => (
                     <li key={shop.id} onClick={() => onShopSelect(shop.id)} style={{ cursor: 'pointer' }}>
                         <img src={shop.logo_image} alt={shop.name} style={{ width: '150px', height: '150px', marginRight: '30px' }} />
-                        {shop.name}
+                        {/* 店名のフォントサイズを大きくする */}
+                        <span style={{ fontSize: '1.8em' }}>{shop.name}</span>
                     </li>
                 ))}
             </ul>

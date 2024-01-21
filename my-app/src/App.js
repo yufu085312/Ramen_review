@@ -73,12 +73,13 @@ function App() {
       ) : (
         // 通常モードのUI
         <div className="flexGrow">
-          <div className="centerText">
+          <div className="searchContainer">
             <SearchForm onSearch={onSearch} clearShops={onClearShops} />
           </div>
-          <div className="flexGrow">
+          <div className="mainContent">
             <div className="halfWidth">
             {!showReviewList ? (
+              // ショップリスト表示
               <ShopList
                 shops={isSearchActive ? displayedShops : shops}
                 onShopSelect={onShopSelect}
@@ -86,24 +87,23 @@ function App() {
                 setPageIndex={setPageIndex}
               />
             ) : (
+              // レビューリスト表示
               <div>
-                <button onClick={backToShopList}>戻る</button>
-                <button onClick={enablePostMode}>Post Review</button>
                 <ReviewList reviews={selectedShopReviews} />
+                <button onClick={backToShopList}>戻る</button>
+                <button onClick={enablePostMode}>投稿</button>
               </div>
             )}
             </div>
-            <div className="halfWidth">
-              <div className="mapHeight">
-                {locationLoaded && <Map
-                  shops={isSearchActive ? displayedShops : shops}
-                  selectedShop={selectedShop}
-                  center={mapCenter}
-                  onShopSelect={onShopSelect}
-                  onMapMovement={onMapChange}
-                  showCircle={showCircle}
-                />}
-              </div>
+            <div className="mapHeight">
+              {locationLoaded && <Map
+                shops={isSearchActive ? displayedShops : shops}
+                selectedShop={selectedShop}
+                center={mapCenter}
+                onShopSelect={onShopSelect}
+                onMapMovement={onMapChange}
+                showCircle={showCircle}
+              />}
             </div>
           </div>
         </div>
