@@ -30,7 +30,7 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
                 <button onClick={showPreviousShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
             )}
             {(pageIndex + 1) * itemsPerPage < shops.length && (
-                <button onClick={showMoreShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>もっと見る</button>
+                <button onClick={showMoreShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>次へ</button>
             )}
         </div>
     );

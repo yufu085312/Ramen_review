@@ -1,0 +1,13 @@
+.reviewFormLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+    /* 適切なスペースを確保 */
+}
+
+.reviewFormContainer form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

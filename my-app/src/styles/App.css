@@ -1,6 +1,7 @@
 /* アプリケーションのメインコンテナスタイル */
 
 .appContainer {
+    position: relative;
     height: 100vh;
     /* コンテナの高さをビューポートの高さと同じに設定 */
     display: flex;
@@ -47,11 +48,28 @@
     /* 高さを親要素の100%に設定 */
 }
 
-
-/* パディングを20ピクセル適用するスタイル（主にフォームやボタンなどに使用） */
-
-.padding20 {
+.reviewform {
     padding: 20px;
-    /* すべての方向に20ピクセルのパディングを適用 */
+    /* パディングを適切な量に調整 */
+    max-width: 800px;
+    /* 最大幅を設定 */
+    width: 100%;
+    /* 幅を100%に設定して、利用可能なスペースを全て使用 */
+    margin: 0 auto;
+    /* 中央寄せ */
+    height: auto;
+    /* 高さを自動に設定して、内容に合わせる */
     text-align: center;
+}
+
+.goBackButton {
+    position: absolute;
+    /* 絶対位置指定 */
+    top: 20px;
+    /* 上から20ピクセルの位置 */
+    left: 20px;
+    /* 左から20ピクセルの位置 */
+    width: 100px;
+    font-size: 1.2em;
+    padding: 10px 20px;
 }
