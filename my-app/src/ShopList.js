@@ -3,7 +3,7 @@ import React from 'react';
 import './styles/ShopList.css';
 
 const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
 
     const showMoreShops = () => {
         setPageIndex((prevPageIndex) => prevPageIndex + 1);

@@ -5,7 +5,7 @@
 }
 
 .reviewList {
-    max-height: 500px;
+    max-height: 350px;
     /* 高さの上限 */
     overflow-y: auto;
     /* 縦方向のスクロールバー */

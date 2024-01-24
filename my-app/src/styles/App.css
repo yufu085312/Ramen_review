@@ -26,6 +26,7 @@
     /* Flexbox レイアウトを使用 */
     flex-grow: 1;
     /* 利用可能なスペースをすべて使用 */
+    margin-top: 20px;
 }
 
 
@@ -46,6 +47,9 @@
     /* 幅を親要素の50%に設定 */
     height: 100%;
     /* 高さを親要素の100%に設定 */
+    border: 5px solid black;
+    box-sizing: border-box;
+    /* パディングとボーダーを含む幅と高さの計算 */
 }
 
 .reviewform {
