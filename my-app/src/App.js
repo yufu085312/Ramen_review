@@ -28,6 +28,7 @@ function App() {
   const [showCircle, setShowCircle] = useState(true);
   const [displayedShops, setDisplayedShops] = useState([]);
   const [selectedShop, setSelectedShop] = useState(null);
+  const [selectedShopDetails, setSelectedShopDetails] = useState(null);
   // ページインデックスの状態
   const [pageIndex, setPageIndex] = useState(0);
   // レビューリスト表示の状態
@@ -47,8 +48,11 @@ function App() {
 
   // ショップ選択処理
   const onShopSelect = (shopId) => {
+    const shop = shops.find(s => s.id === shopId);
+    setSelectedShop(shop);
+    setSelectedShopDetails(shop); // 選択されたショップの詳細情報を設定
     handleShopSelect(shopId, shops, setSelectedShop, setMapCenter, setSelectedShopId, setSelectedShopReviews);
-    setShowReviewList(true);  // レビューリストを表示
+    setShowReviewList(true);
   };
 
   // レビューリストからショップリストへ戻る
@@ -66,8 +70,8 @@ function App() {
     <div className="appContainer">
       {postMode ? (
         // 投稿モードのUI
-        <div className="padding20">
-          <button onClick={disablePostMode} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
+        <div className="reviewform">
+          <button onClick={disablePostMode} className="goBackButton">戻る</button>
           <ReviewForm selectedShopId={selectedShopId} />
         </div>
       ) : (
@@ -89,6 +93,10 @@ function App() {
             ) : (
               // レビューリスト表示
               <div>
+                <h1>店名: {selectedShopDetails && selectedShopDetails.name}</h1>
+                <p>住所: {selectedShopDetails && selectedShopDetails.address}</p>
+                <p>営業日: {selectedShopDetails && selectedShopDetails.open}</p>
+                <p>駐車場: {selectedShopDetails && selectedShopDetails.parking}</p>
                 <ReviewList reviews={selectedShopReviews} />
                 <button onClick={backToShopList} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
                 <button onClick={enablePostMode} style={{ fontSize: '1.2em', padding: '10px 20px' }}>投稿</button>
