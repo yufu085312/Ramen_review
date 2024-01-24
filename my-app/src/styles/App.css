@@ -16,6 +16,7 @@
 .searchContainer {
     text-align: center;
     /* 中央揃えでテキストとフォームを表示 */
+    margin-left: 150px;
 }
 
 
@@ -27,6 +28,27 @@
     flex-grow: 1;
     /* 利用可能なスペースをすべて使用 */
     margin-top: 20px;
+}
+
+.logoArea {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logoImage {
+    height: 50px;
+    /* ロゴのサイズを調整 */
+    margin-left: 20px;
+    /* テキストとの間隔 */
+}
+
+.logoText {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
 }
 
 
@@ -69,9 +91,9 @@
 .goBackButton {
     position: absolute;
     /* 絶対位置指定 */
-    top: 20px;
+    top: 70px;
     /* 上から20ピクセルの位置 */
-    left: 20px;
+    left: 50px;
     /* 左から20ピクセルの位置 */
     width: 100px;
     font-size: 1.2em;
