@@ -7,6 +7,10 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
         setPageIndex((prevPageIndex) => prevPageIndex + 1);
     };
 
+    const showPreviousShops = () => {
+        setPageIndex((prevPageIndex) => prevPageIndex > 0 ? prevPageIndex - 1 : 0);
+    };
+
     // 表示するショップを決定
     const displayedShops = shops.slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage);
 
@@ -22,6 +26,9 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
                     </li>
                 ))}
             </ul>
+            {pageIndex > 0 && (
+                <button onClick={showPreviousShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
+            )}
             {(pageIndex + 1) * itemsPerPage < shops.length && (
                 <button onClick={showMoreShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>もっと見る</button>
             )}
