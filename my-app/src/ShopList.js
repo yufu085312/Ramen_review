@@ -1,4 +1,6 @@
 // ラーメン店の一覧表示
+import React from 'react';
+import './styles/ShopList.css';
 
 const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
     const itemsPerPage = 4;
@@ -16,22 +18,22 @@ const ShopList = ({ shops, onShopSelect, pageIndex, setPageIndex }) => {
 
     return (
         <div>
-            <ul style={{ listStyleType: 'none' }}>
+            <ul className="shopListContainer">
                 {displayedShops.map((shop) => (
-                    // Flexbox を使用してアイテムを横に並べる
-                    <li key={shop.id} onClick={() => onShopSelect(shop.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                        <img src={shop.logo_image} alt={shop.name} style={{ width: '150px', height: '150px', marginRight: '30px' }} />
-                        {/* fontSizeを大きくする */}
-                        <span style={{ fontSize: '1.8em' }}>{shop.name}</span>
+                    <li key={shop.id} onClick={() => onShopSelect(shop.id)} className="shopListItem">
+                        <img src={shop.logo_image} alt={shop.name} className="shopImage" />
+                        <span className="shopName">{shop.name}</span>
                     </li>
                 ))}
             </ul>
-            {pageIndex > 0 && (
-                <button onClick={showPreviousShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>戻る</button>
-            )}
-            {(pageIndex + 1) * itemsPerPage < shops.length && (
-                <button onClick={showMoreShops} style={{ fontSize: '1.2em', padding: '10px 20px' }}>次へ</button>
-            )}
+            <div className="pagination">
+                {pageIndex > 0 && (
+                    <button onClick={showPreviousShops} className="paginationButton">戻る</button>
+                )}
+                {(pageIndex + 1) * itemsPerPage < shops.length && (
+                    <button onClick={showMoreShops} className="paginationButton">次へ</button>
+                )}
+            </div>
         </div>
     );
 };
