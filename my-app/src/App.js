@@ -68,6 +68,10 @@ function App() {
   // コンポーネントのレンダリング
   return (
     <div className="appContainer">
+      <div className="logoArea">
+        <div className="logoText">RAMEN RATING</div>
+        <img src="/logo.png" alt="Logo" className="logoImage" />
+      </div>
       {postMode ? (
         // 投稿モードのUI
         <div className="reviewform">
