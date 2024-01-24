@@ -9,12 +9,14 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    /* 中央揃えを保持、もしくは必要に応じて変更 */
     border-bottom: 1px solid #ddd;
     /* 下線で区切り */
     margin-bottom: 10px;
     /* 下の項目との間隔 */
-    padding: 10px 0;
-    /* 上下のパディング */
+    padding: 5px 0;
+    /* 上下のパディングを小さくする */
+    /* height: 100px;  もし高さを固定したい場合に追加 */
 }
 
 .shopListItem:hover {
@@ -23,15 +25,14 @@
 }
 
 .shopImage {
-    width: 150px;
-    height: 150px;
-    margin-right: 30px;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
     object-fit: cover;
-    /* 画像のアスペクト比を保ちつつフィットさせる */
 }
 
 .shopName {
-    font-size: 1.8em;
+    font-size: 1.4em;
 }
 
 
