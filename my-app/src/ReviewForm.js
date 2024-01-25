@@ -68,15 +68,6 @@ const ReviewForm = ({ selectedShopId }) => {
                         style={{ fontSize: '1.2em', padding: '5px', width: '300px' }} // スタイルを適用
                     />
                 </label>
-                {/* レビュー入力フィールド */}
-                <label className="reviewFormLabel">
-                    レビュー
-                    <textarea
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
-                        style={{ fontSize: '1.2em', padding: '5px', width: '400px', height: '200px' }} // スタイルを適用
-                    ></textarea>
-                </label>
                 {/* 評価点入力フィールド */}
                 <label className="reviewFormLabel">
                     評価点
@@ -86,6 +77,15 @@ const ReviewForm = ({ selectedShopId }) => {
                         onChange={(e) => setReviewPoints(e.target.value)}
                         style={{ fontSize: '1.2em', padding: '5px', width: '100px' }} // スタイルを適用
                     />
+                </label>
+                {/* レビュー入力フィールド */}
+                <label className="reviewFormLabel">
+                    レビュー
+                    <textarea
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                        style={{ fontSize: '1.2em', padding: '5px', width: '400px', height: '200px' }} // スタイルを適用
+                    ></textarea>
                 </label>
                 {/* 投稿ボタン */}
                 <div style={{ textAlign: 'center' }}>
