@@ -55,7 +55,7 @@ const ReviewForm = ({ selectedShopId }) => {
 
     return (
         <div className="reviewFormContainer">
-            <h1>レビューを投稿</h1>
+            <h1>レビュー投稿</h1>
             {message && <p>{message}</p>}
             <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* 名前入力フィールド */}
